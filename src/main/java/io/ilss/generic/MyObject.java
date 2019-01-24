@@ -8,9 +8,12 @@ package io.ilss.generic;
  * @version 1.0
  * @date 2019-01-24 18:32
  */
-public class MyObject<T> extends BaseData{
+public final class MyObject<T> extends BaseData {
     private T valueOne;
     private T valueTwo;
+    public static String str ="ss";
+    int aa = 1;
+
 
     @Override
     public String toString() {
