@@ -1,15 +1,9 @@
-# Java反射—初探反射基础
-
 ### Github：[https://github.com/ilssio/java-base-ilss](https://github.com/ilssio/java-base-ilss)
 
 ## 1. 认识Class类
-
 Java在运行的时候，会为对象维护一个运行时的类型标识，虚拟机运行Java程序的时候用它来选择相应类的方法执行。
-
 Java可以通过一个特定的类来访问这些类信息，这个类就是Class。
-
 - 获取Class的几种方式
-
   ```Java
           Integer integer = 100;
           Class cls = integer.getClass();
@@ -27,74 +21,42 @@ Java可以通过一个特定的类来访问这些类信息，这个类就是Clas
           Class cls3 = int.class;
           System.out.println(cls3.getName());
   ```
-
   注意：
-
   1. `Class.forName(String)`会抛出checked exception（已检查异常）：`ClassNotFoundException`
   2. `Class.forName(String) `给的类需要包含包，包也是类名的一部分
   3. 虽然基本数据类型不是类，但是`int.class`是一个类。
   4. Integer[].class 的类名不是`java.lang.Integer`.而是`[Ljava.lang.Integer ` ,`Double.class`的为`[Ljava.lang.Double`;另外`int[].class`是`[I`
-
 - Class类实际是一个泛型类
-
   `Integer.class`就是一个`Class<Integer>`
-
 - Class类可以用 == 判断是否为同类，如：
-
   `if(integer.getClass() == Integer.class)`
-
 - 动态创建类的实例
-
   `integer.getClass().newInstance()` 
-
   - 此处会抛出`InstantiationException`，
-
 - `Class`类的一些方法
-
   - `T newInstance()`
-
     实例化一个此对象，此外方法在Java9以后已经不推荐被使用
-
   - `Field[] getFields()` 
-
     返回这个对象的`Field`数组，包括了本类和父类的公有域
-
   - `Field[] getDeclaredFields()`
-
     返回`Field`数组，包括这个类的全部域，如果对象没有域，则返回一个长度为0的数组
-
   - `Method[] getMethods()`
-
     返回这个对象的`Method`数组，包括了本类的和父类继承的公有方法
-
   - `Method[] getDeclaredMethods()`
-
     返回`Method`数组，包括这个类的全部方法，但是不包括父类继承的方法。
-
   - `Constructor[] getConstructors()`
-
     返回这个对象的`Constructor`数组，包含所有共有构造器
-
   - `Constructor[] getDeclaredConstructors()`
-
     返回这个对象的`Constructor`数组，包含所有构造器
-
 ## 2. 探索`java.lang.reflect`包
-
+做一个控制台答应类信息的以demo吧。
 `java.lang.reflect`包中包括了几个比较重要的类：`Field`、`Method`、`Constructor`、`Modifier`
-
 - `Field`
-
   在《Java核心技术卷I》中叫做域，简单理解就是对应我们对应的对象，变量。
-
-- `Method`方法
-
+- `Method`方法操作的对象
   - `Class getReturnType()`返回一个返回类型的一个对象
-
-- `Constructor`构造器
-
-- `Modifier` 修饰语
-
+- `Constructor`构造器操作对象
+- `Modifier` 修饰语操作的对象
   - `static String toString(int modifiers)`返回对应位置中的的字符串
   - `static boolean isAbstract(int modifiers)`
   - `static boolean isFinal(int modifiers)`
@@ -107,15 +69,13 @@ Java可以通过一个特定的类来访问这些类信息，这个类就是Clas
   - `static boolean isStrict(int modifiers)`
   - `static boolean isSynchronized(int modifiers)`
   - `static boolean isVolatile(int modifiers)`
-
 - `Field  Method  Constructor`的一些方法
-
   - `Class getDeclaringClass()`返回定义中的Class对象
   - `int getModifier()`返回一个修饰符的值
   - `String getName()`得到名字的字符串
   - `Class[] getExceptionTypes()`得到抛出的异常类型的Class数组（Field没有）
   - `Class[] getParameterTypes()`返回一个类型参数类型的数组（Field没有）
-
+- demo代码如下：
 ```Java
 package io.ilss.reflection;
 
@@ -247,26 +207,6 @@ public class ReflectionTest {
     }
 }
 ```
-
 - 通过上面的demo大家有没有想到，我们用的一些框架，里面某些地方是怎么实现的。就如数据库框架的字段对应，就可以的通过Field的getName方法取得与之匹配。
 - 其实反射也是Java类的使用，但是要深入理解它的意义和用途还是挺难的。
 - 未完待续。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
